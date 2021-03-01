@@ -4,6 +4,7 @@ export async function up(knex: Knex) {
     return knex.schema.createTable('users_ratings', table => {
         table.increments('id').primary();
         table.integer('rating').notNullable();
+        table.string('comment').defaultTo('');
 
         table.integer('movie_id')
             .notNullable()

@@ -20,8 +20,6 @@ export default class MoviesController {
 
         const users_ratings = await db('users_ratings')
             .select(['users_ratings.*']);
-        
-        console.log(users_ratings);
         let new_movies = movies.map(movie => {
             const ratings = users_ratings.filter(rating => { return rating.movie_id == movie.id; });
             const value_ratings = ratings.map(rating => {return rating.rating});
@@ -32,6 +30,8 @@ export default class MoviesController {
 
             return movie
         })
+
+        console.log(new_movies)
 
         return response.json(new_movies);
     }
