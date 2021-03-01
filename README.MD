@@ -41,6 +41,8 @@ ___
 ```bash
 npm install
 
+knex:migrate
+
 npm start
 ```
 
