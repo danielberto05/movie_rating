@@ -1,40 +1,50 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 
 import PageHeader from '../../components/PageHeader';
-import TeacherItem, { Teacher } from '../../components/TeacherItem';
+import MovieItem, { Movie } from '../../components/MovieItem';
 import Input from '../../components/Input';
-import Select from '../../components/Select';
+// import Select from '../../components/Select';
 
 import api from '../../services/api';
 
 import './styles.css';
 
-function TeacherList() {
-  const [teachers, setTeachers] = useState([]);
+function Home() {
+  
+  const [movie, setMovie] = useState([]);
 
-  const [subject, setSubject] = useState('');
-  const [week_day, setWeekDay] = useState('');
-  const [time, setTime] = useState('');
+  const [title, setTitle] = useState('');
+  const [genre, setGenre] = useState('');
+  const [year, setYear] = useState('');
+  const [mpaa_rating, setMpaaRating] = useState('');
 
-  async function searchTeacher(e: FormEvent) {
+  useEffect(() => {
+    api.get('movies').then((response) => {
+      console.log(response.data)
+      setMovie(response.data);
+    })
+  }, [])
+  
+  async function searchMovie(e: FormEvent) {
     e.preventDefault();
 
-    const response = await api.get('classes', {
+    const response = await api.get('movies', {
       params: {
-        subject,
-        week_day,
-        time,
+        title,
+        genre,
+        year,
+        mpaa_rating,
       }
     })
-
-    setTeachers(response.data);
+    console.log(response.data)
+    setMovie(response.data);
   }
 
   return (
     <div id="page-teacher-list" className="container">
-      <PageHeader title="Estes são os proffys disponíveis.">
-        <form id="search-teachers" onSubmit={searchTeacher}>
-          <Select
+      <PageHeader title="Search movie">
+        <form id="search-teachers" onSubmit={searchMovie}>
+          {/* <Select
             name="subject"
             label="Matéria"
             value={ subject }
@@ -67,15 +77,28 @@ function TeacherList() {
               { value: '5', label: 'Sexta-feira' },
               { value: '6', label: 'Sábado' },
             ]}
+          /> */}
+          <Input
+            name="title"
+            label="Title"
+            onChange={e => { setTitle(e.target.value) }}
           />
           <Input
-            name="time"
-            label="Hora"
-            type="time"
-            value={ time }
-            onChange={e => { setTime(e.target.value) }}
+            name="genre"
+            label="Genre"
+            onChange={e => { setGenre(e.target.value) }}
           />
-          
+          <Input
+            name="release_year"
+            label="Release Year"
+            type="number"
+            onChange={e => { setYear(e.target.value) }}
+          />
+          <Input
+            name="mpaa_rating"
+            label="Rating"
+            onChange={e => { setMpaaRating(e.target.value) }}
+          />
           <button type="submit">
             Buscar
           </button>
@@ -83,12 +106,12 @@ function TeacherList() {
       </PageHeader>
 
       <main>
-        { teachers.map((teacher: Teacher) => {
-          return <TeacherItem key={ teacher.id } teacher={teacher} />
+        { movie.map((movie: Movie) => {
+          return <MovieItem key={ movie.id } movie={movie} />
         }) }
       </main>
     </div>
   );
 }
 
-export default TeacherList;
+export default Home;

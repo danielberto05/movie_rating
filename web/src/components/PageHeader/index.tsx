@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import backIcon from '../../assets/images/icons/back.svg';
 
-import './styles.css';
+import './style.css';
 
 interface PageHeaderProps {
   title: string;
@@ -14,13 +14,13 @@ const PageHeader:React.FC<PageHeaderProps> = (props) => {
   return (
     <header className="page-header">
       <div className="top-bar-container">
-        <Link to="/">
+        {/* <Link to="/">
           <img src={backIcon} alt="Voltar"/>
-        </Link>
+        </Link> */}
       </div>
       <div className="header-content">
         <strong>{props.title}</strong>
-        { props.description && <p>{ props.description }</p>}
+        { props.description && <span>{ props.description }</span>}
         { props.children }
       </div>
     </header>
