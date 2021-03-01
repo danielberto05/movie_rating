@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
-// import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
-
 import './style.css';
 
 export interface Movie {
